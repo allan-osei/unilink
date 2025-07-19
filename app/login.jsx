@@ -1,11 +1,40 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Dimensions } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Dimensions, ActivityIndicator } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const handleLogin = async () => {
+    setErrorMsg('');
+    setLoading(true);
+    try {
+      const response = await fetch('http://localhost:4000/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await response.json();
+      setLoading(false);
+
+      if (response.ok) {
+        // Store token in browser
+        if (data.token) {
+          localStorage.setItem('unilink_token', data.token);
+        }
+        navigation.navigate('OnboardingScreen');
+      } else {
+        setErrorMsg(data.error || 'Login failed.');
+      }
+    } catch (error) {
+      setLoading(false);
+      setErrorMsg('Network Error: Could not connect to server.');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -17,6 +46,8 @@ export default function LoginScreen({ navigation }) {
       />
 
       <Text style={styles.title}>Login</Text>
+
+      {errorMsg ? <Text style={styles.errorMsg}>{errorMsg}</Text> : null}
 
       <TextInput
         style={styles.input}
@@ -37,12 +68,16 @@ export default function LoginScreen({ navigation }) {
         secureTextEntry
       />
 
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => {/* navigation logic for forgot password */}}>
-        <Text style={styles.link}>Forgot password?</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleLogin}
+        disabled={loading}
+      >
+        {loading ? (
+          <ActivityIndicator color="#fff" />
+        ) : (
+          <Text style={styles.buttonText}>Login</Text>
+        )}
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation && navigation.navigate('RegisterScreen')}>
@@ -101,5 +136,18 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: 8,
     textAlign: 'center',
+  },
+  errorMsg: {
+    color: '#d32f2f',
+    fontSize: 15,
+    marginBottom: 12,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    backgroundColor: '#fff',
+    padding: 8,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#d32f2f',
+    width: '100%',
   },
 });

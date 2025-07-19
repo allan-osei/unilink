@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Dimensions } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Dimensions, ActivityIndicator } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
@@ -8,6 +8,45 @@ export default function RegisterScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(''); // <-- Add this
+
+  const handleSignUp = async () => {
+    setErrorMsg(''); // Clear previous error
+    if (!name || !email || !password || !confirmPassword) {
+      setErrorMsg('Please fill in all fields.');
+      return;
+    }
+    if (password !== confirmPassword) {
+      setErrorMsg('Passwords do not match.');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await fetch('http://localhost:4000/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password }),
+      });
+      const data = await response.json();
+      setLoading(false);
+
+      if (response.ok) {
+        setErrorMsg('');
+        // Store token in browser (if returned from backend)
+        if (data.token) {
+          localStorage.setItem('unilink_token', data.token);
+        }
+        navigation.navigate('OnboardingScreen');
+      } else {
+        setErrorMsg(data.error || 'Something went wrong.');
+      }
+    } catch (error) {
+      setLoading(false);
+      setErrorMsg('Network Error: Could not connect to server.');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -19,6 +58,11 @@ export default function RegisterScreen({ navigation }) {
       />
 
       <Text style={styles.title}>Sign Up</Text>
+
+      {/* Error message display */}
+      {errorMsg ? (
+        <Text style={styles.errorMsg}>{errorMsg}</Text>
+      ) : null}
 
       <TextInput
         style={styles.input}
@@ -56,8 +100,16 @@ export default function RegisterScreen({ navigation }) {
         secureTextEntry
       />
 
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Sign Up</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleSignUp}
+        disabled={loading}
+      >
+        {loading ? (
+          <ActivityIndicator color="#fff" />
+        ) : (
+          <Text style={styles.buttonText}>Sign Up</Text>
+        )}
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation && navigation.navigate('LoginScreen')}>
@@ -85,6 +137,19 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#2166A5',
     marginBottom: 24,
+  },
+  errorMsg: {
+    color: '#d32f2f',
+    fontSize: 15,
+    marginBottom: 12,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    backgroundColor: '#fff',
+    padding: 8,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#d32f2f',
+    width: '100%',
   },
   input: {
     width: '100%',

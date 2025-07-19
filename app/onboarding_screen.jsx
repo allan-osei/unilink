@@ -22,7 +22,7 @@ export default function OnboardingScreen({ navigation }) {
       {/* Get Started button */}
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation && navigation.navigate('LoginScreen')}
+        onPress={() => navigation && navigation.navigate('HomeScreen')}
       >
         <Text style={styles.buttonText}>Get Started</Text>
       </TouchableOpacity>

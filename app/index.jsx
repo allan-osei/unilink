@@ -1,41 +1,76 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
+import { MaterialCommunityIcons, Ionicons, FontAwesome } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
 
 export default function HomeScreen({ navigation }) {
+  // Example user and posts data
+  const user = {
+    name: 'Mildred Ferguson',
+    profilePic: require('../assets/icon.png'), // Replace with your image
+  };
+
+  const posts = [
+    {
+      id: 1,
+      author: 'Dr. Agyemang',
+      time: 'just posted',
+      image: require('../assets/splash-icon.png'), // Replace with your image
+      title: 'Artificial Intelligence Conference',
+    },
+    {
+      id: 2,
+      author: 'Dr. Peasah',
+      time: '2 minutes ago',
+      image: require('../assets/splash-icon.png'), // Replace with your image
+      title: 'How to Make Career in AI',
+    },
+  ];
+
   return (
     <View style={styles.container}>
-      {/* App Bar/Header */}
+      {/* Header with profile */}
       <View style={styles.header}>
-        <Image
-          source={require('../assets/unilink-logo.png')}
-          style={styles.logo}
-          resizeMode="contain"
-        />
-        <Text style={styles.headerTitle}>UniLink</Text>
+        <Image source={user.profilePic} style={styles.profilePic} />
+        <Text style={styles.welcome}>Welcome {user.name}</Text>
       </View>
 
-      {/* Welcome Message */}
-      <Text style={styles.welcome}>Welcome back!</Text>
-
-      {/* Main Content */}
-      <ScrollView contentContainerStyle={styles.content}>
-        {/* Example Feature Cards */}
-        <TouchableOpacity style={styles.card} onPress={() => navigation && navigation.navigate('ExploreScreen')}>
-          <Text style={styles.cardTitle}>Explore</Text>
-          <Text style={styles.cardDesc}>Discover events, clubs, and more</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.card} onPress={() => navigation && navigation.navigate('ProfileScreen')}>
-          <Text style={styles.cardTitle}>Profile</Text>
-          <Text style={styles.cardDesc}>View and edit your profile</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.card} onPress={() => navigation && navigation.navigate('NotificationsScreen')}>
-          <Text style={styles.cardTitle}>Notifications</Text>
-          <Text style={styles.cardDesc}>See what’s new</Text>
-        </TouchableOpacity>
-        {/* Add more cards as needed */}
+      {/* Campus Feed */}
+      <ScrollView style={styles.feed}>
+        {posts.map(post => (
+          <View key={post.id} style={styles.postCard}>
+            <View style={styles.postHeader}>
+              <Image source={user.profilePic} style={styles.postAvatar} />
+              <View>
+                <Text style={styles.postAuthor}>{post.author}</Text>
+                <Text style={styles.postTime}>{post.time}</Text>
+              </View>
+            </View>
+            <Image source={post.image} style={styles.postImage} resizeMode="cover" />
+            <Text style={styles.postTitle}>{post.title}</Text>
+          </View>
+        ))}
       </ScrollView>
+
+      {/* Bottom Navigation with icons */}
+      <View style={styles.navBar}>
+        <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
+          <MaterialCommunityIcons name="home" size={28} color="#2166A5" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('MapScreen')}>
+          <Ionicons name="map" size={28} color="#2166A5" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('InternshipScreen')}>
+          <MaterialCommunityIcons name="briefcase" size={28} color="#2166A5" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('NotificationsScreen')}>
+          <Ionicons name="notifications" size={28} color="#2166A5" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen')}>
+          <FontAwesome name="user-circle" size={32} color="#2166A5" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -43,58 +78,80 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#B3D0F7',
+    backgroundColor: '#E3EFFB',
+    paddingTop: 40,
   },
   header: {
-    flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: 48,
-    paddingBottom: 16,
-    paddingHorizontal: 20,
-    backgroundColor: '#2166A5',
+    marginBottom: 10,
+    backgroundColor: '#B3D0F7',
+    paddingVertical: 20,
   },
-  logo: {
-    width: 36,
-    height: 36,
-    marginRight: 12,
-  },
-  headerTitle: {
-    color: '#fff',
-    fontSize: 22,
-    fontWeight: 'bold',
-    letterSpacing: 1,
+  profilePic: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    marginBottom: 8,
   },
   welcome: {
     fontSize: 20,
-    color: '#2166A5',
     fontWeight: 'bold',
-    marginTop: 24,
-    marginLeft: 20,
-    marginBottom: 12,
+    color: '#2166A5',
   },
-  content: {
-    paddingHorizontal: 20,
-    paddingBottom: 40,
+  feed: {
+    flex: 1,
+    paddingHorizontal: 12,
   },
-  card: {
+  postCard: {
     backgroundColor: '#fff',
     borderRadius: 14,
-    padding: 24,
     marginBottom: 18,
+    padding: 16,
     shadowColor: '#2166A5',
     shadowOpacity: 0.08,
     shadowRadius: 8,
     elevation: 2,
   },
-  cardTitle: {
-    fontSize: 18,
-    color: '#2166A5',
-    fontWeight: 'bold',
-    marginBottom: 6,
+  postHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
   },
-  cardDesc: {
-    fontSize: 14,
+  postAvatar: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    marginRight: 8,
+  },
+  postAuthor: {
+    fontWeight: 'bold',
+    fontSize: 15,
+    color: '#222',
+  },
+  postTime: {
+    fontSize: 12,
+    color: '#888',
+  },
+  postImage: {
+    width: '100%',
+    height: width * 0.45,
+    borderRadius: 10,
+    marginBottom: 8,
+    marginTop: 8,
+  },
+  postTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
     color: '#2166A5',
-    opacity: 0.8,
+    marginTop: 4,
+  },
+  navBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    backgroundColor: '#B3D0F7',
+    paddingVertical: 10,
+    borderTopWidth: 1,
+    borderColor: '#dbeafe',
   },
 });
