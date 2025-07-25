@@ -43,14 +43,16 @@ const signUpUser = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
+  
   const { email, password } = req.body;
-
+console.log(req)
   // Find user by email
   const { data: user, error } = await supabase
     .from('users')
     .select('*')
     .eq('email', email)
     .single();
+    console.log("User is ",user)
 
   if (!user) {
     return res.status(401).json({ error: 'Invalid email or password.' });
