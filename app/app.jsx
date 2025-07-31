@@ -4,8 +4,9 @@ import HomeScreen from './index';
 import RegisterScreen from './register';
 import LoginScreen from './login';
 import OnboardingScreen from './onboarding_screen';
-import SettingsScreen from './settings'
-import MapScreen from './map';
+import ProfileScreen from './profile';
+import NotificationsScreen from './notifications';
+import SettingsScreen from './settings';
 
 import InternshipScreen from './internship';
 import NotificationsScreen from './notifications';
@@ -18,11 +19,9 @@ export default function AppNavigator() {
       <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="OnboardingScreen" component={OnboardingScreen} />
-      <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
-      <Stack.Screen name="InternshipScreen" component={InternshipScreen} />
+      <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
       <Stack.Screen name="NotificationsScreen" component={NotificationsScreen} />
-      {/* <Stack.Screen name="MapScreen" component={MapScreen} /> */}
-
+      <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
       {/* Add other screens as needed */}
     </Stack.Navigator>
   );
