@@ -9,7 +9,7 @@ import NotificationsScreen from './notifications';
 import SettingsScreen from './settings';
 
 import InternshipScreen from './internship';
-import NotificationsScreen from './notifications';
+
 const Stack = createNativeStackNavigator();
 
 export default function AppNavigator() {
