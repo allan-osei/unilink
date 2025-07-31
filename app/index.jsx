@@ -7,7 +7,7 @@ const { width } = Dimensions.get('window');
 export default function HomeScreen({ navigation }) {
   // Example user and posts data
   const user = {
-    name: 'Mildred Ferguson',
+    name: JSON.parse(localStorage.getItem('unilink_user'))?.name || 'User'  ,
     profilePic: require('../assets/icon.png'), // Replace with your image
   };
 
@@ -67,7 +67,7 @@ export default function HomeScreen({ navigation }) {
         <TouchableOpacity onPress={() => navigation.navigate('NotificationsScreen')}>
           <Ionicons name="notifications" size={28} color="#2166A5" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen')}>
+        <TouchableOpacity onPress={() => navigation.navigate('SettingsScreen')}>
           <FontAwesome name="user-circle" size={32} color="#2166A5" />
         </TouchableOpacity>
       </View>

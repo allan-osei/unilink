@@ -13,18 +13,22 @@ export default function LoginScreen({ navigation }) {
     setErrorMsg('');
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:4000/api/auth/login', {
+      const response = await fetch('https://unilink-tuqi.onrender.com/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
       const data = await response.json();
       setLoading(false);
+      print(data)
+    
 
       if (response.ok) {
+        localStorage.setItem('unilink_user', JSON.stringify(data.user));
         // Store token in browser
         if (data.token) {
           localStorage.setItem('unilink_token', data.token);
+          
         }
         navigation.navigate('OnboardingScreen');
       } else {

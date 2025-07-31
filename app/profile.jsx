@@ -20,7 +20,7 @@ export default function ProfileScreen({ navigation }) {
       <TouchableOpacity style={styles.editButton}>
         <Text style={styles.editButtonText}>Edit Profile</Text>
       </TouchableOpacity>
-
+    
       {/* Profile Options */}
       <View style={styles.options}>
         <TouchableOpacity style={styles.option} onPress={() => navigation && navigation.navigate('SettingsScreen')}>

@@ -1,60 +1,107 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
-
-const { width } = Dimensions.get('window');
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  SafeAreaView,
+} from 'react-native';
+import {
+  MaterialCommunityIcons,
+  Ionicons,
+  FontAwesome,
+} from '@expo/vector-icons';
 
 export default function SettingsScreen({ navigation }) {
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Settings</Text>
-      <View style={styles.options}>
-        <TouchableOpacity style={styles.option}>
-          <Text style={styles.optionText}>Account</Text>
+    <SafeAreaView style={styles.screen}>
+      <View style={styles.container}>
+        <Text style={styles.header}>Settings</Text>
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          <TouchableOpacity style={styles.option}>
+            <Text style={styles.optionText}>Account</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.option}>
+            <Text style={styles.optionText}>Notifications</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.option}>
+            <Text style={styles.optionText}>Privacy</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.option}>
+            <Text style={styles.optionText}>Help & Support</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.option}>
+            <Text style={styles.optionText}>About</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </View>
+
+      {/* Bottom Navigation */}
+      <View style={styles.navBar}>
+        <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
+          <MaterialCommunityIcons name="home" size={28} color="#2166A5" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.option}>
-          <Text style={styles.optionText}>Notifications</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('MapScreen')}>
+          <Ionicons name="map" size={28} color="#2166A5" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.option}>
-          <Text style={styles.optionText}>Privacy</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('InternshipScreen')}>
+          <MaterialCommunityIcons name="briefcase" size={28} color="#2166A5" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.option}>
-          <Text style={styles.optionText}>Help & Support</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('NotificationsScreen')}>
+          <Ionicons name="notifications" size={28} color="#2166A5" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.option}>
-          <Text style={styles.optionText}>About</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('SettingsScreen')}>
+          <FontAwesome name="user-circle" size={32} color="#2166A5" />
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
+
 const styles = StyleSheet.create({
-  container: {
+  screen: {
     flex: 1,
     backgroundColor: '#B3D0F7',
+  },
+  container: {
+    flex: 1,
     paddingTop: 60,
-    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  scrollContent: {
+    paddingBottom: 100,
   },
   header: {
     fontSize: 28,
     fontWeight: 'bold',
     color: '#2166A5',
-    marginBottom: 24,
-  },
-  options: {
-    width: '90%',
+    marginBottom: 30,
+    alignSelf: 'center',
   },
   option: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
+    backgroundColor: '#ffffff',
+    borderRadius: 14,
     padding: 18,
-    marginBottom: 14,
-    alignItems: 'center',
-    elevation: 1,
+    marginBottom: 16,
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
   },
   optionText: {
     color: '#2166A5',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '600',
+  },
+  navBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderTopWidth: 1,
+    borderColor: '#ccc',
+    paddingVertical: 12,
   },
 });

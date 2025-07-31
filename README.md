@@ -1,151 +1,153 @@
-﻿# unilink
+﻿🧠 UniLink
+UniLink is a student-centered mobile platform that helps university students discover internships, events, maps, and profile services within their academic ecosystem.
+It consists of:
 
+📱 A React Native (Expo) frontend
 
-# UniLink Backend
+🧠 A Node.js/Express backend with Supabase as the primary database/auth provider
 
-This is the Node.js backend for the **UniLink** mobile app, a campus assistant platform built to support students, staff, and faculty. The backend integrates with **Supabase** for authentication and database operations.
+📁 Project Structure
+bash
+Copy
+Edit
+unilink/
+├── unilink-frontend/          # React Native (Expo) mobile app
+│   ├── app/                   # Screens (Login, Home, Internships, etc.)
+│   ├── assets/                # Logos, images, icons
+│   └── App.jsx                # Navigation and route config
+│
+└── unilink-backend/           # Node.js backend
+    ├── controllers/           # Logic for routes
+    ├── routes/                # API routes (e.g., /auth, /internships)
+    ├── services/              # Supabase client config
+    ├── .env                   # Supabase credentials
+    └── server.js              # Express server setup
+🚀 Getting Started
+🔧 Prerequisites
+Node.js (v18+)
 
----
+npm
 
-## 📦 Tech Stack
+Expo CLI (npm install -g expo-cli)
 
-- **Node.js** + **Express**
-- **Supabase** (PostgreSQL, Auth, Realtime, Storage)
-- **dotenv** for environment variables
-- **CORS** for handling cross-origin requests
+Supabase account + project
 
----
-
-## ⚙️ Project Structure
-
-```
-unilink-backend/
-├── controllers/           # API logic (auth, events, etc.)
-│   └── authController.js
-├── routes/                # Express route handlers
-│   └── authRoutes.js
-├── services/              # Supabase connection and service logic
-│   └── supabaseClient.js
-├── .env                   # Environment variables (DO NOT COMMIT)
-├── server.js              # App entry point
-├── package.json           # Node project metadata
-└── README.md              # You're here!
-```
-
----
-
-## 🚀 Getting Started
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/your-org/unilink-backend.git
-cd unilink-backend
-```
-
-### 2. Install Dependencies
-
-```bash
+🖥️ Backend Setup (Node.js + Supabase)
+1. Go to the backend folder
+bash
+Copy
+Edit
+cd unilink/unilink-backend
+2. Install dependencies
+bash
+Copy
+Edit
 npm install
-```
+3. Create .env file
+Create a .env file in the root of unilink-backend and add:
 
----
+ini
+Copy
+Edit
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_ANON_KEY=your-anon-key
+PORT=5000
+❗ Replace values with those from your Supabase project.
 
-## 🔐 Supabase Setup
-
-1. Go to [https://app.supabase.com](https://app.supabase.com) and create a project.
-2. In your Supabase dashboard:
-   - Go to **Settings → API**
-   - Copy your **Project URL**
-   - Copy your **Anon public key**
-
-3. Create a `.env` file in the root:
-
-```env
-SUPABASE_URL=https://<your-project-id>.supabase.co
-SUPABASE_KEY=eyJhbGciOi...   # Your anon public key
-PORT=4000
-```
-
-> 🔒 Never commit `.env` to version control.
-
----
-
-## 🧪 Run the Project
-
-```bash
+4. Start the server
+bash
+Copy
+Edit
 npm start
-```
+The server will run on http://localhost:5000
 
-Or with nodemon:
+📱 Frontend Setup (React Native with Expo)
+1. Go to the frontend folder
+bash
+Copy
+Edit
+cd unilink/unilink-frontend
+2. Install dependencies
+bash
+Copy
+Edit
+npm install
+3. Start Expo
+bash
+Copy
+Edit
+npx expo start
+You can now open the app in:
 
-```bash
-npm run dev
-```
+Android/iOS simulator
 
-You should see:
+Expo Go on a physical device (scan QR)
 
-```
-Server is running on port 4000
-```
+🧠 Features
+✅ Frontend (Expo)
+Onboarding screen
 
----
+Login/Signup using Supabase Auth
 
-## 🧩 API Routes (So Far)
+Explore internships
 
-### 🔐 Auth Routes
+Interactive map (for in-person campus events)
 
-| Method | Endpoint         | Description            |
-|--------|------------------|------------------------|
-| POST   | `/api/auth/signup` | Create a new user account |
+Notifications page
 
-#### Example Payload
-```json
-{
-  "email": "student@example.com",
-  "password": "123456"
-}
-```
+User settings & profile page
 
----
+Sticky bottom navigation
 
-## 📁 Example: Supabase Client Setup (`services/supabaseClient.js`)
+⚙️ Backend (Node.js)
+Auth endpoints (/login, /register)
 
-```js
-const { createClient } = require('@supabase/supabase-js');
+Internship CRUD (/api/internships)
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_KEY
-);
+Supabase client abstraction
 
-module.exports = supabase;
-```
+CORS and Express middleware setup
 
----
+🔒 Security
+DO NOT commit .env or sensitive keys to GitHub
 
-## ✅ Next Steps
+.gitignore should include:
 
-- Add more routes (`/api/events`, `/api/grades`, `/api/internships`)
-- Protect routes using Supabase JWTs (middleware)
-- Add Supabase Row Level Security (RLS) policies in dashboard
+bash
+Copy
+Edit
+.env
+node_modules/
+If you accidentally pushed it:
 
----
+bash
+Copy
+Edit
+git rm --cached .env
+echo ".env" >> .gitignore
+git add .gitignore
+git commit -m "Remove .env from repo"
+git push
+📡 API Example
+http
+Copy
+Edit
+GET /api/internships
+Content-Type: application/json
 
-## 🙋 Contributing
+[
+  {
+    "title": "Software Engineering Intern",
+    "company": "TechNova",
+    "location": "Remote",
+    "duration": "3 Months",
+    ...
+  }
+]
+👥 Contributors
+Backend: Amofa Bright
 
-1. Fork the repo
-2. Create a feature branch
-3. Push your changes and create a PR
+Frontend: Allan Osei
 
----
-
-## 📄 License
-
-MIT License — free for educational or academic use.
-
----
-
-## 💬 Support
-
-For help, contact the backend engineer or your team lead.
+📜 License
+This project is licensed under the MIT License.

@@ -1,90 +1,114 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { MaterialCommunityIcons, Ionicons, FontAwesome } from '@expo/vector-icons';
 
-const { width } = Dimensions.get('window');
-
-const mockNotifications = [
+const notifications = [
   {
     id: 1,
-    title: 'Event Reminder',
-    description: 'Don’t forget the Science Club meeting today at 5pm!',
-    time: '2h ago',
+    title: 'New Internship Posted!',
+    message: 'A new Software Engineering internship is now available at TechNova.',
+    time: '2 hours ago',
   },
   {
     id: 2,
-    title: 'New Message',
-    description: 'You have a new message from the Debate Society.',
-    time: '5h ago',
+    title: 'Profile Updated',
+    message: 'Your profile has been successfully updated.',
+    time: '1 day ago',
   },
   {
     id: 3,
-    title: 'Campus Update',
-    description: 'Library hours have changed for the holiday.',
-    time: '1d ago',
+    title: 'New Event: Career Fair',
+    message: 'Join us at the upcoming virtual career fair for networking opportunities.',
+    time: '3 days ago',
   },
-  // Add more notifications as needed
 ];
 
-export default function NotificationsScreen() {
+export default function NotificationsScreen({ navigation }) {
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Notifications</Text>
-      <ScrollView contentContainerStyle={styles.content}>
-        {mockNotifications.map((notif) => (
-          <View key={notif.id} style={styles.card}>
-            <Text style={styles.title}>{notif.title}</Text>
-            <Text style={styles.desc}>{notif.description}</Text>
-            <Text style={styles.time}>{notif.time}</Text>
+    <View style={styles.screen}>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <Text style={styles.title}>Notifications</Text>
+
+        {notifications.map((note) => (
+          <View key={note.id} style={styles.card}>
+            <Text style={styles.cardTitle}>{note.title}</Text>
+            <Text style={styles.cardMessage}>{note.message}</Text>
+            <Text style={styles.cardTime}>{note.time}</Text>
           </View>
         ))}
       </ScrollView>
+
+      <View style={styles.navBar}>
+        <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
+          <MaterialCommunityIcons name="home" size={28} color="#2166A5" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('MapScreen')}>
+          <Ionicons name="map" size={28} color="#2166A5" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('InternshipScreen')}>
+          <MaterialCommunityIcons name="briefcase" size={28} color="#2166A5" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('NotificationsScreen')}>
+          <Ionicons name="notifications" size={28} color="#2166A5" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('SettingsScreen')}>
+          <FontAwesome name="user-circle" size={32} color="#2166A5" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  screen: {
     flex: 1,
-    backgroundColor: '#B3D0F7',
-    paddingTop: 60,
+    backgroundColor: '#f4f4f4',
   },
-  header: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#2166A5',
-    marginLeft: 20,
-    marginBottom: 16,
+  scrollContent: {
+    padding: 20,
+    paddingBottom: 100,
   },
-  content: {
-    paddingHorizontal: 20,
-    paddingBottom: 40,
+  title: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#333',
+    marginBottom: 20,
+    textAlign: 'center',
   },
   card: {
     backgroundColor: '#fff',
-    borderRadius: 14,
-    padding: 18,
+    borderRadius: 12,
+    padding: 16,
     marginBottom: 16,
-    shadowColor: '#2166A5',
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
     elevation: 2,
   },
-  title: {
+  cardTitle: {
     fontSize: 16,
+    fontWeight: '600',
     color: '#2166A5',
-    fontWeight: 'bold',
     marginBottom: 4,
   },
-  desc: {
+  cardMessage: {
     fontSize: 14,
-    color: '#2166A5',
-    opacity: 0.85,
+    color: '#444',
     marginBottom: 6,
   },
-  time: {
+  cardTime: {
     fontSize: 12,
-    color: '#2166A5',
-    opacity: 0.6,
+    color: '#888',
     textAlign: 'right',
+  },
+  navBar: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    backgroundColor: '#B3D0F7',
+    paddingVertical: 10,
+    borderTopWidth: 1,
+    borderColor: '#dbeafe',
   },
 });
